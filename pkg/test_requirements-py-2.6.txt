@@ -1,7 +1,10 @@
 -r requirements_full-py-2.6.txt
 coveralls
 # disable this if 'pkg_resources.VersionConflict' error happens:
-flake8
+flake8 < 3.0.0
+# if pip >= 6.0:
+#flake8     <  3.0.0; python_version == '2.6' or python_version == '3.3'
+#flake8     >= 3.0.0; python_version == '2.7' or python_version >  '3.3'
 nose
 pep8
 # :see: 2.4 What versions of Python is Pylint supporting? in
