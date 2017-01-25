@@ -36,9 +36,9 @@ class Test_10_functions(unittest.TestCase):
 
     def test_16_dict_to_rels_itr__lists_of_dicts(self):
         dic = dict(id=0, a="AAA",
-                   b=[dict(id='00', b=1, c=2), dict(id='01', b=0, c=3)])
-        rest = sorted([('b', [('id', '01'), ('b', 0), ('c', 3)]),
-                       ('b', [('id', '00'), ('b', 1), ('c', 2)])])
+                   b=[dict(id=0, b=1, c=2), dict(id=1, b=0, c=3)])
+        rest = sorted([('b', [('id', 0), ('b', 1), ('c', 2)]),
+                       ('b', [('id', 1), ('b', 0), ('c', 3)])])
         ref = [('A', [('id', 0), ('a', 'AAA')])] + rest
         self.assertEqual(list(TT._dict_to_rels_itr(dic, "A")), ref)
 
