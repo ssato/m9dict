@@ -34,4 +34,12 @@ class Test_10_functions(unittest.TestCase):
                ('rel_A_c', [('id', id_2), ('A', '01'), ('c', 'c')])]
         self.assertEqual(list(TT._dict_to_rels_itr(dic, "A")), ref)
 
+    def test_16_dict_to_rels_itr__lists_of_dicts(self):
+        dic = dict(id=0, a="AAA",
+                   b=[dict(id='00', b=1, c=2), dict(id='01', b=0, c=3)])
+        ref = [('A', [('id', 0), ('a', 'AAA')]),
+               ('b', [('id', '01'), ('b', 0), ('c', 3)]),
+               ('b', [('id', '00'), ('b', 1), ('c', 2)])]
+        self.assertEqual(list(TT._dict_to_rels_itr(dic, "A")), ref)
+
 # vim:sw=4:ts=4:et:

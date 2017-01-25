@@ -55,6 +55,15 @@ def _dict_to_rels_itr(dic, rel_name):
 
     >>> list(_dict_to_rels_itr(dict(id=0, a=1, b="b"), "ab"))
     [('ab', [('id', 0), ('a', 1), ('b', 'b')])]
+
+    >>> dic = dict(id=0, a=[dict(id='00', b=1, c=2), dict(id='01', b=0, c=3)])
+    >>> list(_dict_to_rels_itr(dic, "A"))  # doctest: +NORMALIZE_WHITESPACE
+    [('A', [('id', 0)]),
+     ('a', [('id', '01'), ('b', 0), ('c', 3)]),
+     ('a', [('id', '00'), ('b', 1), ('c', 2)])]
+
+    >>> list(_dict_to_rels_itr(dict(id=0, a=dict(id=1, b=1), d="D"), "A"))
+    [('A', [('id', 0), ('d', 'D')]), ('a', [('id', 1), ('b', 1)])]
     """
     lkeys = [k for k, v in dic.items() if m9dicts.utils.is_list_like(v)]
     dkeys = [k for k, v in dic.items() if m9dicts.utils.is_dict_like(v)]
