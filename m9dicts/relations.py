@@ -40,11 +40,16 @@ def _gen_id(*args):
     return object_to_id(args)
 
 
-def _rel_name(*relations):
+def _rel_name(rel_name, key, level=0, names=None):
     """
     :return: Generated composite relation name from relations
     """
-    return "rel_" + '_'.join(relations)
+    if names is None:
+        names = []
+    name = "rel_%s_%s" % (rel_name, key)
+    if name in names:
+        name = "%s_%d" % (name, level)
+    return name
 
 
 def _sorted(items):
@@ -58,7 +63,7 @@ def _sorted(items):
         return sorted(items)
 
 
-def _dict_to_rels_itr(dic, rel_name):
+def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
     """
     Convert nested dict[s] to tuples of relation name and relations of items in
     the dict, and yields each pairs.
@@ -75,12 +80,15 @@ def _dict_to_rels_itr(dic, rel_name):
     ...                ('a', [('id', '00'), ('b', 1), ('c', 2)])])
     >>> items = list(_dict_to_rels_itr(dic, "A"))
     >>> ref = [('A', [('id', 0)])] + rest
-    >>> items == ref
-    True
+    >>> assert items == ref, "%r vs. %r" % (items, ref)
+    >>>
 
     >>> list(_dict_to_rels_itr(dict(id=0, a=dict(id=1, b=1), d="D"), "A"))
     [('A', [('id', 0), ('d', 'D')]), ('a', [('id', 1), ('b', 1)])]
     """
+    if names is None:
+        names = []
+
     lkeys = [k for k, v in dic.items() if m9dicts.utils.is_list_like(v)]
     dkeys = [k for k, v in dic.items() if m9dicts.utils.is_dict_like(v)]
     items = sorted((k, v) for k, v in dic.items()
@@ -88,12 +96,14 @@ def _dict_to_rels_itr(dic, rel_name):
     oid = dic.get("id", _gen_id(*items))
     yield (rel_name, [("id", oid)] + items)
 
+    level += 1
+    kwargs = dict(level=level, names=names)
     if lkeys:
         for key in sorted(lkeys):
-            name = _rel_name(rel_name, key)
+            name = _rel_name(rel_name, key, level=level, names=names)
             for val in _sorted(dic[key]):
                 if m9dicts.utils.is_dict_like(val):
-                    for tpl in _dict_to_rels_itr(val, key):
+                    for tpl in _dict_to_rels_itr(val, key, **kwargs):
                         yield tpl
                 else:
                     lid = _gen_id(key, val)
@@ -101,8 +111,8 @@ def _dict_to_rels_itr(dic, rel_name):
 
     if dkeys:
         for key in sorted(dkeys):
-            name = _rel_name(rel_name, key)
-            for tpl in _dict_to_rels_itr(dic[key], key):
+            name = _rel_name(rel_name, key, level + 1, names)
+            for tpl in _dict_to_rels_itr(dic[key], key, **kwargs):
                 yield tpl
 
 
