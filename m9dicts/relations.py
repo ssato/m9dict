@@ -105,7 +105,6 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
 
     if dkeys:
         for key in sorted(dkeys):
-            name = _rel_name(rel_name, key, **kwargs)
             for tpl in _dict_to_rels_itr(dic[key], key, **kwargs):
                 yield tpl
 
