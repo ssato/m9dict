@@ -11,6 +11,7 @@ try:
 except ImportError:
     from md5 import md5
 
+import m9dicts.compat
 import m9dicts.utils
 
 
@@ -26,7 +27,7 @@ def object_to_id(obj):
     >>> object_to_id(['a', 'b', 'c'])
     'eea457285a61f212e4bbaaf890263ab4'
     """
-    return md5(str(obj)).hexdigest()
+    return md5(m9dicts.compat.to_str(obj)).hexdigest()
 
 
 def _gen_id(*args):
