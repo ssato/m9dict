@@ -105,4 +105,21 @@ def _dict_to_rels_itr(dic, rel_name):
             for tpl in _dict_to_rels_itr(dic[key], key):
                 yield tpl
 
+
+def dict_to_rels(dic, name):
+    """
+    Convert nested dict[s] to tuples of relation name and relations of items in
+    the dict, and yields each pairs.
+
+    :param dic: A dict or dict-like object
+    :param name: Name for relations of items in `dic`
+    :return: A list of (<relation_name>, [tuple of key and value])
+    """
+    assert m9dicts.utils.is_dict_like(dic)
+
+    fst = operator.itemgetter(0)
+    rels = _dict_to_rels_itr(dic, name)
+    return [(k, sorted(t[1:] for t in g))
+            for k, g in itertools.groupby(sorted(rels, key=fst), fst)]
+
 # vim:sw=4:ts=4:et:
