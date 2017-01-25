@@ -6,6 +6,9 @@
 """
 from __future__ import absolute_import
 
+import itertools
+import operator
+
 try:
     from hashlib import md5
 except ImportError:
@@ -44,6 +47,17 @@ def _rel_name(*relations):
     return "rel_" + '_'.join(relations)
 
 
+def _sorted(items):
+    """
+    :param items: Any iterables
+    """
+    if items and m9dicts.utils.is_dict_like(items[0]):
+        # return items  # Return as it is because dicts are not ordered.
+        return sorted(items, key=lambda d: list(d.items()))
+    else:
+        return sorted(items)
+
+
 def _dict_to_rels_itr(dic, rel_name):
     """
     Convert nested dict[s] to tuples of relation name and relations of items in
@@ -57,10 +71,12 @@ def _dict_to_rels_itr(dic, rel_name):
     [('ab', [('id', 0), ('a', 1), ('b', 'b')])]
 
     >>> dic = dict(id=0, a=[dict(id='00', b=1, c=2), dict(id='01', b=0, c=3)])
-    >>> list(_dict_to_rels_itr(dic, "A"))  # doctest: +NORMALIZE_WHITESPACE
-    [('A', [('id', 0)]),
-     ('a', [('id', '01'), ('b', 0), ('c', 3)]),
-     ('a', [('id', '00'), ('b', 1), ('c', 2)])]
+    >>> rest = sorted([('a', [('id', '01'), ('b', 0), ('c', 3)]),
+    ...                ('a', [('id', '00'), ('b', 1), ('c', 2)])])
+    >>> items = list(_dict_to_rels_itr(dic, "A"))
+    >>> ref = [('A', [('id', 0)])] + rest
+    >>> items == ref
+    True
 
     >>> list(_dict_to_rels_itr(dict(id=0, a=dict(id=1, b=1), d="D"), "A"))
     [('A', [('id', 0), ('d', 'D')]), ('a', [('id', 1), ('b', 1)])]
@@ -75,7 +91,7 @@ def _dict_to_rels_itr(dic, rel_name):
     if lkeys:
         for key in sorted(lkeys):
             name = _rel_name(rel_name, key)
-            for val in sorted(dic[key]):
+            for val in _sorted(dic[key]):
                 if m9dicts.utils.is_dict_like(val):
                     for tpl in _dict_to_rels_itr(val, key):
                         yield tpl
