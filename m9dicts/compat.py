@@ -11,6 +11,8 @@
 """
 from __future__ import absolute_import
 
+import sys
+
 try:
     from collections import OrderedDict  # flake8: noqa
 except ImportError:
@@ -20,5 +22,12 @@ try:
     STR_TYPES = (basestring, unicode)  # flake8: noqa
 except NameError:
     STR_TYPES = (str, )  # flake8: noqa
+
+
+def to_str(obj):
+    """
+    :return: String representation of given object
+    """
+    return str(obj).encode("utf-8") if sys.version_info[0] == 3 else str(obj)
 
 # vim:sw=4:ts=4:et:
