@@ -87,6 +87,8 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
     """
     if names is None:
         names = []
+    else:
+        names.append(rel_name)
 
     lkeys = [k for k, v in dic.items() if m9dicts.utils.is_list_like(v)]
     dkeys = [k for k, v in dic.items() if m9dicts.utils.is_dict_like(v)]
