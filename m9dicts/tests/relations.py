@@ -42,4 +42,10 @@ class Test_10_functions(unittest.TestCase):
         ref = [('A', [('id', 0), ('a', 'AAA')])] + rest
         self.assertEqual(list(TT._dict_to_rels_itr(dic, "A")), ref)
 
+    def test_20_dict_to_rels_itr__gen_id(self):
+        dic = dict(a=1)
+        oid = TT._gen_id(('a', 1))
+        self.assertEqual(list(TT._dict_to_rels_itr(dic, "A")),
+                         [('A', [('id', oid), ('a', 1)])])
+
 # vim:sw=4:ts=4:et:
