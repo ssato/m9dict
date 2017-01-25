@@ -101,7 +101,7 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
     kwargs = dict(level=level, names=names)
     if lkeys:
         for key in sorted(lkeys):
-            name = _rel_name(rel_name, key, level=level, names=names)
+            name = _rel_name(rel_name, key, **kwargs)
             for val in _sorted(dic[key]):
                 if m9dicts.utils.is_dict_like(val):
                     for tpl in _dict_to_rels_itr(val, key, **kwargs):
@@ -112,7 +112,7 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
 
     if dkeys:
         for key in sorted(dkeys):
-            name = _rel_name(rel_name, key, level + 1, names)
+            name = _rel_name(rel_name, key, **kwargs)
             for tpl in _dict_to_rels_itr(dic[key], key, **kwargs):
                 yield tpl
 
