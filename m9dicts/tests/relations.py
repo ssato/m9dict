@@ -40,7 +40,9 @@ class Test_10_functions(unittest.TestCase):
         rest = sorted([('b', [('id', 0), ('b', 1), ('c', 2)]),
                        ('b', [('id', 1), ('b', 0), ('c', 3)])])
         ref = [('A', [('id', 0), ('a', 'AAA')])] + rest
-        self.assertEqual(list(TT._dict_to_rels_itr(dic, "A")), ref)
+        res = list(TT._dict_to_rels_itr(dic, "A"))
+        self.assertEqual(ref[0], res[0])
+        self.assertEqual(sorted(ref[1:]), sorted(res[1:]))
 
     def test_20_dict_to_rels_itr__gen_id(self):
         dic = dict(a=1)
