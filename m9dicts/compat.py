@@ -19,6 +19,11 @@ except ImportError:
     from ordereddict import OrderedDict  # flake8: noqa
 
 try:
+    from hashlib import md5
+except ImportError:
+    from md5 import md5
+
+try:
     STR_TYPES = (basestring, unicode)  # flake8: noqa
 except NameError:
     STR_TYPES = (str, )  # flake8: noqa
