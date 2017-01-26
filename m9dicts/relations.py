@@ -63,6 +63,22 @@ def _sorted(items):
         return sorted(items)
 
 
+def _dict_to_rels_itr_0(dic, key, name, rel_name, pid, **kwargs):
+    """
+    :param dic: A dict or dict-like object
+    :param key: Key name
+    :param name: Name for relations
+    :param rel_name: Name for parent relations
+    :param pid: ID of parent object
+    :param kwargs: Keyword arguments such as level, names
+    """
+    cid = dic.get("id", _gen_id(*sorted(dic.items())))
+    yield (name, [("id", cid), (rel_name, pid)])
+
+    for tpl in _dict_to_rels_itr(dic, key, **kwargs):
+        yield tpl
+
+
 def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
     """
     Convert nested dict[s] to tuples of relation name and relations of items in
@@ -75,8 +91,11 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
     >>> list(_dict_to_rels_itr(dict(id=0, a=1, b="b"), "ab"))
     [('ab', [('id', 0), ('a', 1), ('b', 'b')])]
 
-    >>> list(_dict_to_rels_itr(dict(id=0, a=dict(id=1, b=1), d="D"), "A"))
-    [('A', [('id', 0), ('d', 'D')]), ('a', [('id', 1), ('b', 1)])]
+    >>> list(_dict_to_rels_itr(dict(id=0, a=dict(id=1, b=1), d="D"),
+    ...                        "A"))  # doctest: +NORMALIZE_WHITESPACE
+    [('A', [('id', 0), ('d', 'D')]),
+     ('rel_A_a', [('id', 1), ('A', 0)]),
+     ('a', [('id', 1), ('b', 1)])]
     """
     if names is None:
         names = []
@@ -87,8 +106,8 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
     dkeys = [k for k, v in dic.items() if m9dicts.utils.is_dict_like(v)]
     items = sorted((k, v) for k, v in dic.items()
                    if k != "id" and k not in lkeys and k not in dkeys)
-    oid = dic.get("id", _gen_id(*items))
-    yield (rel_name, [("id", oid)] + items)
+    pid = dic.get("id", _gen_id(*items))
+    yield (rel_name, [("id", pid)] + items)
 
     level += 1
     kwargs = dict(level=level, names=names)
@@ -97,20 +116,21 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
             name = _rel_name(rel_name, key, **kwargs)
             for val in _sorted(dic[key]):
                 if m9dicts.utils.is_dict_like(val):
-                    # :todo: Avoid name collision.
+                    # :todo: Avpid name collision.
                     # if name in val:
                     #     ...
-                    cid = val.get("id", _gen_id(*(val.items())))
-                    yield (name, [("id", cid), (rel_name, oid)])
-                    for tpl in _dict_to_rels_itr(val, key, **kwargs):
+                    for tpl in _dict_to_rels_itr_0(val, key, name, rel_name,
+                                                   pid, **kwargs):
                         yield tpl
                 else:
                     cid = _gen_id(key, val)
-                    yield (name, [("id", cid), (rel_name, oid), (key, val)])
+                    yield (name, [("id", cid), (rel_name, pid), (key, val)])
 
     if dkeys:
         for key in sorted(dkeys):
-            for tpl in _dict_to_rels_itr(dic[key], key, **kwargs):
+            name = _rel_name(rel_name, key, **kwargs)
+            for tpl in _dict_to_rels_itr_0(dic[key], key, name, rel_name,
+                                           pid, **kwargs):
                 yield tpl
 
 
