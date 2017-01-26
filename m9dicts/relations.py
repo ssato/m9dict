@@ -97,11 +97,16 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
             name = _rel_name(rel_name, key, **kwargs)
             for val in _sorted(dic[key]):
                 if m9dicts.utils.is_dict_like(val):
+                    # :todo: Avoid name collision.
+                    # if name in val:
+                    #     ...
+                    cid = val.get("id", _gen_id(*(val.items())))
+                    yield (name, [("id", cid), (rel_name, oid)])
                     for tpl in _dict_to_rels_itr(val, key, **kwargs):
                         yield tpl
                 else:
-                    lid = _gen_id(key, val)
-                    yield (name, [("id", lid), (rel_name, oid), (key, val)])
+                    cid = _gen_id(key, val)
+                    yield (name, [("id", cid), (rel_name, oid), (key, val)])
 
     if dkeys:
         for key in sorted(dkeys):
