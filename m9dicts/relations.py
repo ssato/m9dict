@@ -147,7 +147,7 @@ def dict_to_rels(dic, name):
 
     fst = operator.itemgetter(0)
     rels = _dict_to_rels_itr(dic, name)
-    return [(k, sorted(t[1:] for t in g))
+    return [(k, sorted(t[1] for t in g))
             for k, g in itertools.groupby(sorted(rels, key=fst), fst)]
 
 # vim:sw=4:ts=4:et:
