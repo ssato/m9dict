@@ -73,7 +73,7 @@ def _dict_to_rels_itr_0(dic, key, name, rel_name, pid, **kwargs):
     :param kwargs: Keyword arguments such as level, names
     """
     cid = dic.get("id", _gen_id(*sorted(dic.items())))
-    yield (name, [("id", cid), (rel_name, pid)])
+    yield (name, (("id", cid), (rel_name, pid)))
 
     for tpl in _dict_to_rels_itr(dic, key, **kwargs):
         yield tpl
@@ -89,13 +89,13 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
     :return: A list of (<relation_name>, [tuple of key and value])
 
     >>> list(_dict_to_rels_itr(dict(id=0, a=1, b="b"), "ab"))
-    [('ab', [('id', 0), ('a', 1), ('b', 'b')])]
+    [('ab', (('id', 0), ('a', 1), ('b', 'b')))]
 
     >>> list(_dict_to_rels_itr(dict(id=0, a=dict(id=1, b=1), d="D"),
     ...                        "A"))  # doctest: +NORMALIZE_WHITESPACE
-    [('A', [('id', 0), ('d', 'D')]),
-     ('rel_A_a', [('id', 1), ('A', 0)]),
-     ('a', [('id', 1), ('b', 1)])]
+    [('A', (('id', 0), ('d', 'D'))),
+     ('rel_A_a', (('id', 1), ('A', 0))),
+     ('a', (('id', 1), ('b', 1)))]
     """
     if names is None:
         names = []
@@ -107,7 +107,7 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
     items = sorted((k, v) for k, v in dic.items()
                    if k != "id" and k not in lkeys and k not in dkeys)
     pid = dic.get("id", _gen_id(*items))
-    yield (rel_name, [("id", pid)] + items)
+    yield (rel_name, tuple([("id", pid)] + items))
 
     level += 1
     kwargs = dict(level=level, names=names)
@@ -124,7 +124,7 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
                         yield tpl
                 else:
                     cid = _gen_id(key, val)
-                    yield (name, [("id", cid), (rel_name, pid), (key, val)])
+                    yield (name, (("id", cid), (rel_name, pid), (key, val)))
 
     if dkeys:
         for key in sorted(dkeys):
