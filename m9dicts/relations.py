@@ -58,16 +58,16 @@ def _sorted(items):
         return sorted(items)
 
 
-def _dict_to_rels_itr_0(dic, key, name, rel_name, pid, **kwargs):
+def _dict_to_rels_itr_0(dic, key, rel_name, pid, **kwargs):
     """
     :param dic: A dict or dict-like object
     :param key: Key name
-    :param name: Name for relations
     :param rel_name: Name for parent relations
     :param pid: ID of parent object
     :param kwargs: Keyword arguments such as level, names
     """
     cid = dic.get("id", _gen_id(*sorted(dic.items())))
+    name = _rel_name(rel_name, key, **kwargs)
     yield (name, (("id", cid), (rel_name, pid)))
 
     for tpl in _dict_to_rels_itr(dic, key, **kwargs):
@@ -108,24 +108,23 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
     kwargs = dict(level=level, names=names)
     if lkeys:
         for key in sorted(lkeys):
-            name = _rel_name(rel_name, key, **kwargs)
             for val in _sorted(dic[key]):
                 if m9dicts.utils.is_dict_like(val):
                     # :todo: Avoid name collision.
                     # if name in val:
                     #     ...
-                    for tpl in _dict_to_rels_itr_0(val, key, name, rel_name,
-                                                   pid, **kwargs):
+                    for tpl in _dict_to_rels_itr_0(val, key, rel_name, pid,
+                                                   **kwargs):
                         yield tpl
                 else:
                     cid = _gen_id(key, val)
+                    name = _rel_name(rel_name, key, **kwargs)
                     yield (name, (("id", cid), (rel_name, pid), (key, val)))
 
     if dkeys:
         for key in sorted(dkeys):
-            name = _rel_name(rel_name, key, **kwargs)
-            for tpl in _dict_to_rels_itr_0(dic[key], key, name, rel_name,
-                                           pid, **kwargs):
+            for tpl in _dict_to_rels_itr_0(dic[key], key, rel_name, pid,
+                                           **kwargs):
                 yield tpl
 
 
