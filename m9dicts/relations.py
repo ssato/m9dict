@@ -118,8 +118,8 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
                         yield tpl
                 else:
                     cid = _gen_id(key, val)
-                    name = _rel_name(rel_name, key, **kwargs)
-                    yield (name, (("id", cid), (rel_name, pid), (key, val)))
+                    yield (_rel_name(rel_name, key, **kwargs),
+                           (("id", cid), (rel_name, pid), (key, val)))
 
     if dkeys:
         for key in sorted(dkeys):
