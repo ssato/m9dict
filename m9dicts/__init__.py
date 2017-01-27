@@ -4,7 +4,7 @@
 """
 from .globals import (
     MS_REPLACE, MS_NO_REPLACE, MS_DICTS, MS_DICTS_AND_LISTS, MERGE_STRATEGIES,
-    NTPL_CLS_KEY
+    NTPL_CLS_KEY, NAMED_TUPLE_TYPE, RELATIONS_TYPE
 )  # flake8: noqa
 from .dicts import (
     UpdateWithReplaceDict, UpdateWoReplaceDict, UpdateWithMergeDict,
