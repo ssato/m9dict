@@ -111,7 +111,7 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
             name = _rel_name(rel_name, key, **kwargs)
             for val in _sorted(dic[key]):
                 if m9dicts.utils.is_dict_like(val):
-                    # :todo: Avpid name collision.
+                    # :todo: Avoid name collision.
                     # if name in val:
                     #     ...
                     for tpl in _dict_to_rels_itr_0(val, key, name, rel_name,
