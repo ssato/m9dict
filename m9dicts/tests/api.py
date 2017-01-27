@@ -168,7 +168,7 @@ class Test_30_convert_to(unittest.TestCase):
         _triangle = collections.namedtuple("Triangle", "p0 p1 p2")
         itpl = _triangle(_point(0, 0), _point(1, 0), _point(0, 1))
         md0 = TT.make(itpl)
-        otpl = TT.convert_to(md0, to_namedtuple=True)
+        otpl = TT.convert_to(md0, to_type=TT.NAMED_TUPLE)
         self.assertEqual(otpl, itpl)
 
 # vim:sw=4:ts=4:et:
