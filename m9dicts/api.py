@@ -239,8 +239,8 @@ def convert_to(obj, ordered=False, to_namedtuple=False, **options):
     bunch.unbunchify. (bunch is distributed under MIT license same as this.)
 
     .. note::
-       - Given `obj` doesn't keep key order and if `to_namedtuple` is True,
-         then the order of fields of result namedtuple object becomes random.
+       - If given `obj` does not keep key order, then the order of fields of
+         result namedtuple object becomes random.
        - namedtuple object cannot have fields start with '_', So it'll fail if
          to convert dicts has such keys.
 
