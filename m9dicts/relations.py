@@ -68,7 +68,7 @@ def _dict_to_rels_itr_0(dic, key, rel_name, pid, **kwargs):
     """
     cid = dic.get("id", _gen_id(*sorted(dic.items())))
     name = _rel_name(rel_name, key, **kwargs)
-    yield (name, (("id", cid), (rel_name, pid)))
+    yield (name, ((key, cid), (rel_name, pid)))
 
     for tpl in _dict_to_rels_itr(dic, key, **kwargs):
         yield tpl
@@ -89,7 +89,7 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
     >>> list(_dict_to_rels_itr(dict(id=0, a=dict(id=1, b=1), d="D"),
     ...                        "A"))  # doctest: +NORMALIZE_WHITESPACE
     [('A', (('id', 0), ('d', 'D'))),
-     ('rel_A_a', (('id', 1), ('A', 0))),
+     ('rel_A_a', (('a', 1), ('A', 0))),
      ('a', (('id', 1), ('b', 1)))]
     """
     if names is None:

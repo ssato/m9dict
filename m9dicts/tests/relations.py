@@ -39,8 +39,8 @@ class Test_10_functions(unittest.TestCase):
                    b=[dict(id=0, b=1, c=2), dict(id=1, b=0, c=3)])
         rest = sorted([('b', (('id', 0), ('b', 1), ('c', 2))),
                        ('b', (('id', 1), ('b', 0), ('c', 3))),
-                       ('rel_A_b', (('id', 0), ('A', 0))),
-                       ('rel_A_b', (('id', 1), ('A', 0)))])
+                       ('rel_A_b', (('b', 0), ('A', 0))),
+                       ('rel_A_b', (('b', 1), ('A', 0)))])
 
         ref = [('A', (('id', 0), ('a', 'AAA')))] + rest
         res = list(TT._dict_to_rels_itr(dic, "A"))
