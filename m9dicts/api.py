@@ -263,14 +263,14 @@ def convert_to(obj, ordered=False, to_type=None, **options):
         - rel_name to specify relation name of the top level relation
 
     :return:
-        A dict or namedtuple object if to_type == NAMED_TUPLE or relations list
-        if to_type == RELATIONS
+        A dict or namedtuple object if to_type == NAMED_TUPLE_TYPE or relations
+        list if to_type == RELATIONS_TYPE
     """
     options.update(ordered=ordered, to_type=to_type)
     if m9dicts.utils.is_dict_like(obj):
-        if to_type == m9dicts.globals.NAMED_TUPLE:
+        if to_type == m9dicts.globals.NAMED_TUPLE_TYPE:
             return _convert_to_namedtuple(obj, **options)
-        if to_type == m9dicts.globals.RELATIONS:
+        if to_type == m9dicts.globals.RELATIONS_TYPE:
             rel_name = options.get("rel_name", None)
             return m9dicts.relations.dict_to_rels(obj, name=rel_name)
         else:
