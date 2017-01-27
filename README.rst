@@ -96,15 +96,26 @@ keyword arguments 'ordered' and 'merge':
 Please take a look at the next section for more details of each classes.
 
 m9dicts.convert_to is an utility function to convert m9dict object to a dict or
-namedtuple object recursively.
+namedtuple or relations object recursively.
 
 .. code-block:: console
 
     >>> md4 = m9dicts.make(OrderedDict(((m9dicts.NTPL_CLS_KEY, "Point"),
     ...                                 ("x", 1), ("y", 2))),
     ...                    ordered=True)
-    >>> m9dicts.convert_to(md4, to_namedtuple=True)
+    >>> m9dicts.convert_to(md4, to_type=m9dicts.NAMED_TUPLE_TYPE)
     Point(x=1, y=2)
+
+.. code-block:: console
+
+    >>> md5 = m9dicts.make(dict(id=0, name="net-snmp",
+    ...                         evr=dict(id="1:5.5-44.el6", epoch=1, ver="5.5",
+                                         rel="44.el6")))
+    >>> m9dicts.convert_to(md5, to_type=m9dicts.RELATIONS_TYPE, rel_name="rpms")
+    [('evr',
+      [(('id', '1:5.5-44.el6'), ('epoch', 1), ('rel', '44.el6'), ('ver', '5.5'))]),
+     ('rel_data_evr', [(('evr', '1:5.5-44.el6'), ('data', 0))]),
+     ('rpms', [(('id', 0), ('name', 'net-snmp'))])]
 
 m9dicts.get is to get value from nested dicts of which key is given by some
 path expressions. For example,
