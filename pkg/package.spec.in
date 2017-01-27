@@ -90,6 +90,10 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Jan 27 2017 Satoru SATOH <ssato@redhat.com> - 0.3.0-1
+- Add support of convertion from m9dicts objects to relations
+- Add workaround to make flake8 worked in older python environements
+
 * Thu Jan 14 2016 Satoru SATOH <ssato@redhat.com> - 0.2.0-1
 - A lot of code cleanups, refactorings and fixes especially in APIs with
   compatibility kept and changes are at the minimum
