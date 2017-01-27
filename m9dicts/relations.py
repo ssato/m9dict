@@ -129,7 +129,7 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
                 yield tpl
 
 
-def dict_to_rels(dic, name):
+def dict_to_rels(dic, name=None):
     """
     Convert nested dict[s] to tuples of relation name and relations of items in
     the dict, and yields each pairs.
@@ -139,6 +139,9 @@ def dict_to_rels(dic, name):
     :return: A list of (<relation_name>, [tuple of key and value])
     """
     assert m9dicts.utils.is_dict_like(dic)
+
+    if name is None:
+        name = "data"  # Default.
 
     fst = operator.itemgetter(0)
     rels = _dict_to_rels_itr(dic, name)
