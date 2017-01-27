@@ -176,7 +176,7 @@ class Test_30_convert_to(unittest.TestCase):
         res = TT.convert_to(md0, to_type=MG.RELATIONS_TYPE)
         ref = [('b', [(('id', 2), ('c', 'C'))]),
                ('data', [(('id', 1), ('a', 'aaa'))]),
-               ('rel_data_b', [(('id', 2), ('data', 1))])]
+               ('rel_data_b', [(('b', 2), ('data', 1))])]
 
         self.assertEqual(sorted(res), sorted(ref))
 
