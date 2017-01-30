@@ -92,17 +92,17 @@ def _dict_to_rels_itr(dic, rel_name, level=0, names=None):
      ('rel_A_a', (('a', 1), ('A', 0))),
      ('a', (('id', 1), ('b', 1)))]
     """
-    if names is None:
-        names = []
-    else:
-        names.append(rel_name)
-
     lkeys = [k for k, v in dic.items() if m9dicts.utils.is_list_like(v)]
     dkeys = [k for k, v in dic.items() if m9dicts.utils.is_dict_like(v)]
     items = sorted((k, v) for k, v in dic.items()
                    if k != "id" and k not in lkeys and k not in dkeys)
     pid = dic.get("id", _gen_id(*items))
     yield (rel_name, tuple([("id", pid)] + items))
+
+    if names is None:
+        names = []
+    else:
+        names.append(rel_name)
 
     level += 1
     kwargs = dict(level=level, names=names)
