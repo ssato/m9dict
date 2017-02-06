@@ -90,6 +90,10 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Feb  6 2017 Satoru SATOH <ssato@redhat.com> - 0.4.0-1
+- Remove support of convertion from m9dicts objects to relations because it's
+  not stable enough
+
 * Fri Jan 27 2017 Satoru SATOH <ssato@redhat.com> - 0.3.0-1
 - Add support of convertion from m9dicts objects to relations
 - Add workaround to make flake8 worked in older python environements
