@@ -12,6 +12,7 @@ from .dicts import (
     UpdateWoReplaceOrderedDict, UpdateWithMergeOrderedDict,
     UpdateWithMergeListsOrderedDict
 )  # flake8: noqa
+from .relations import Ref  # flake8: noqa
 from .api import get, set_, make, convert_to  # flake8: noqa
 from .utils import is_dict_like, is_namedtuple, is_list_like
 
