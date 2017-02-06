@@ -12,6 +12,7 @@ import m9dicts.globals as MG
 
 from m9dicts.tests.common import dicts_equal
 from m9dicts.compat import OrderedDict
+from m9dicts.relations import Ref
 
 
 class Test_10_get(unittest.TestCase):
