@@ -174,9 +174,9 @@ class Test_30_convert_to(unittest.TestCase):
     def test_40_to_relations(self):
         md0 = dict(id=1, a="aaa", b=[dict(id=2, c="C")])
         res = TT.convert_to(md0, to_type=MG.RELATIONS_TYPE)
-        ref = [('b', [(('id', 2), ('c', 'C'))]),
-               ('data', [(('id', 1), ('a', 'aaa'))]),
-               ('rel_data_b', [(('b', 2), ('data', 1))])]
+        ref = [('a_b', [(('a', 'aaa'), ('b', Ref(relvar='b', id=2)),
+                         ('id', 1))]),
+               ('b', [(('c', 'C'), ('id', 2))])]
 
         self.assertEqual(sorted(res), sorted(ref))
 
