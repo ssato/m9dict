@@ -170,6 +170,20 @@ def _ndict_to_rels_itr(dic, seen, relvar=None, idkey=ID_KEY):
         yield tpl
 
 
+def dict_to_rels_itr(dic, name=None):
+    """
+    Convert nested dict[s] to tuples of relation name and relations of items in
+    the dict, and yields each pairs.
+
+    :param dic: A dict or dict-like object
+    :param name: Name for relations of items in `dic`
+    :return: A list of (<relvar>, [tuple of key and value or Ref object])
+    """
+    seen = set()
+    for rls in _ndict_to_rels_itr(dic, seen, relvar=name):
+        yield rls
+
+
 def dict_to_rels(dic, name=None):
     """
     Convert nested dict[s] to tuples of relation name and relations of items in
@@ -180,8 +194,7 @@ def dict_to_rels(dic, name=None):
     :return: A list of (<relvar>, [tuple of key and value or Ref object])
     """
     fst = operator.itemgetter(0)
-    seen = set()
-    rels = _ndict_to_rels_itr(dic, seen, relvar=name)
+    rels = dict_to_rels_itr(dic, name=name)
     return [(k, sorted(set(t[1] for t in g)))
             for k, g in itertools.groupby(sorted(rels, key=fst), fst)]
 
